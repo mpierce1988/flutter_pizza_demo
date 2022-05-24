@@ -7,26 +7,39 @@ class Pizza {
 
   //Pizza ({required this.id, required this.pizzaName, required this.description, required this.price, required this.imageUrl});
 
-  Pizza.fromJson(Map<String, dynamic> json) {
+  Pizza();
+
+  static Pizza? fromJsonOrNull(Map<String, dynamic> json) {
+    // instantiate a pizza object
+    Pizza pizza = Pizza();
     // use ternary operators to avoid getting null or bad values
 
     //id = (json['id'] != null && int.tryParse(json['id'].toString())) ?
     //int.convert(json['id'].toString()) : 0;
-    id = (json['id'] != null && double.tryParse(json['id'].toString()) == true)
-        ? int.parse(json['id'])
-        : 0;
+    pizza.id =
+        (json['id'] != null && double.tryParse(json['id'].toString()) != null)
+            ? int.parse(json['id'].toString())
+            : 0;
 
-    pizzaName = (json['pizzaName'] != null) ? json['pizzaName'].toString() : '';
+    pizza.pizzaName =
+        (json['pizzaName'] != null) ? json['pizzaName'].toString() : '';
 
-    description =
+    pizza.description =
         (json['description'] != null) ? json['description'].toString() : '';
 
-    price = (json['price'] != null &&
+    pizza.price = (json['price'] != null &&
             double.tryParse(json['price'].toString()) != null)
         ? double.tryParse(json['price'].toString())
         : 0.0;
 
-    imageUrl = (json['imageUrl'] != null) ? json['imageUrl'].toString() : '';
+    pizza.imageUrl =
+        (json['imageUrl'] != null) ? json['imageUrl'].toString() : '';
+
+    if (pizza.id == 0 || pizza.pizzaName?.trim() == '') {
+      return null;
+    }
+
+    return pizza;
   }
 
   Map<String, dynamic> toJson() {
