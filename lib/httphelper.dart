@@ -21,7 +21,7 @@ class HttpHelper {
       final jsonResponse = json.decode(result.body);
       // provide a type argument to the map method to avoid a type error
       List<Pizza> pizzas =
-          jsonResponse.map<Pizza>((i) => Pizza.fromJsonOrNull(i)).toList();
+          jsonResponse.map<Pizza>((i) => Pizza.fromJson(i)).toList();
 
       return pizzas;
     }

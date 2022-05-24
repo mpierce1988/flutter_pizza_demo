@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:store_data/pizza.dart';
 import 'package:flutter/material.dart';
 
+import 'httphelper.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -33,7 +35,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    readJsonFile();
+    //readJsonFile();
+    callPizzas();
     super.initState();
   }
 
@@ -42,21 +45,25 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(title: const Text('JSON')),
       body: FutureBuilder(
-        future: readJsonFile(),
-        builder: (BuildContext context, AsyncSnapshot<List<Pizza>> pizzas) {
-          return ListView.builder(
-            itemCount: pizzas.data == null ? 0 : pizzas.data!.length,
-            itemBuilder: (BuildContext context, int position) {
-              return ListTile(
-                title: pizzas.data == null
-                    ? const Text('Default Text')
-                    : Text(pizzas.data![position].pizzaName!),
-                subtitle: Text(pizzas.data![position].description! +
-                    ' - ' +
-                    pizzas.data![position].price.toString()),
-              );
-            },
-          );
+        future: callPizzas(),
+        builder: (BuildContext context, AsyncSnapshot<List<Pizza>?> pizzas) {
+          if (pizzas.hasData) {
+            return ListView.builder(
+              itemCount: pizzas.data == null ? 0 : pizzas.data!.length,
+              itemBuilder: (BuildContext context, int position) {
+                return ListTile(
+                  title: pizzas.data == null
+                      ? const Text('Default Text')
+                      : Text(pizzas.data![position].pizzaName!),
+                  subtitle: Text(pizzas.data![position].description! +
+                      ' - ' +
+                      pizzas.data![position].price.toString()),
+                );
+              },
+            );
+          } else {
+            return Center(child: const CircularProgressIndicator());
+          }
         },
       ),
     );
@@ -99,5 +106,14 @@ class _MyHomePageState extends State<MyHomePage> {
     json += ']';
 
     return json;
+  }
+
+  // create method to call for pizzas from the web
+  Future<List<Pizza>?> callPizzas() async {
+    HttpHelper helper = HttpHelper();
+
+    List<Pizza>? pizzas = await helper.getPizzaList();
+
+    return pizzas;
   }
 }
