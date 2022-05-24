@@ -1,3 +1,9 @@
+const keyId = 'id';
+const keyName = 'pizzaName';
+const keyDescription = 'description';
+const keyPrice = 'price';
+const keyImage = 'imageUrl';
+
 class Pizza {
   int? id;
   String? pizzaName;
@@ -17,23 +23,21 @@ class Pizza {
     //id = (json['id'] != null && int.tryParse(json['id'].toString())) ?
     //int.convert(json['id'].toString()) : 0;
     pizza.id =
-        (json['id'] != null && double.tryParse(json['id'].toString()) != null)
-            ? int.parse(json['id'].toString())
+        (json[keyId] != null && double.tryParse(json[keyId].toString()) != null)
+            ? int.parse(json[keyId].toString())
             : 0;
 
-    pizza.pizzaName =
-        (json['pizzaName'] != null) ? json['pizzaName'].toString() : '';
+    pizza.pizzaName = (json[keyName] != null) ? json[keyName].toString() : '';
 
     pizza.description =
-        (json['description'] != null) ? json['description'].toString() : '';
+        (json[keyDescription] != null) ? json[keyDescription].toString() : '';
 
-    pizza.price = (json['price'] != null &&
-            double.tryParse(json['price'].toString()) != null)
-        ? double.tryParse(json['price'].toString())
+    pizza.price = (json[keyPrice] != null &&
+            double.tryParse(json[keyPrice].toString()) != null)
+        ? double.tryParse(json[keyPrice].toString())
         : 0.0;
 
-    pizza.imageUrl =
-        (json['imageUrl'] != null) ? json['imageUrl'].toString() : '';
+    pizza.imageUrl = (json[keyImage] != null) ? json[keyImage].toString() : '';
 
     if (pizza.id == 0 || pizza.pizzaName?.trim() == '') {
       return null;
@@ -44,11 +48,11 @@ class Pizza {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'pizzaName': pizzaName,
-      'description': description,
-      'price': price,
-      'imageUrl': imageUrl,
+      keyId: id,
+      keyName: pizzaName,
+      keyDescription: description,
+      keyPrice: price,
+      keyImage: imageUrl,
     };
   }
 }

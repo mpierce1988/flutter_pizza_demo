@@ -75,8 +75,10 @@ class _MyHomePageState extends State<MyHomePage> {
     //myMap.forEach((dynamic pizza) {});
 
     for (dynamic pizza in myMap) {
-      Pizza myPizza = Pizza.fromJsonOrNull(pizza)!;
-      myPizzas.add(myPizza);
+      if (Pizza.fromJsonOrNull(pizza) != null) {
+        Pizza myPizza = Pizza.fromJsonOrNull(pizza)!;
+        myPizzas.add(myPizza);
+      }
     }
 
     //String json = convertToJson(myPizzas);
